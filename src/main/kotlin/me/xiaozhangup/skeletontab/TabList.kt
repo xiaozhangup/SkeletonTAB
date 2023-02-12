@@ -30,6 +30,7 @@ object TabList : Plugin() {
     private var tabSettings: TabSettings? = null
     private var globalTabList: GlobalTabList? = null
     private var tabListHeaderFooter: TabListHeaderFooter? = null
+
     @Subscribe
     fun onProxyInitialization(event: ProxyInitializeEvent?) {
         tabSettings = TabSettings(dataDirectory!!.toFile())

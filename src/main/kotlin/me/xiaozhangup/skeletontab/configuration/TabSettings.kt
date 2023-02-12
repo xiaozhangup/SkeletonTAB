@@ -23,7 +23,8 @@ class TabSettings(private val dataFolder: File) {
         if (!dataFolder.exists()) dataFolder.mkdir()
         if (file.exists()) return
         try {
-            TabSettings::class.java.getResourceAsStream("/config.toml").use { `in` -> `in`?.let { Files.copy(it, file.toPath()) } }
+            TabSettings::class.java.getResourceAsStream("/config.toml")
+                .use { `in` -> `in`?.let { Files.copy(it, file.toPath()) } }
         } catch (e: IOException) {
             throw RuntimeException(e)
         }
