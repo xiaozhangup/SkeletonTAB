@@ -8,6 +8,7 @@ import com.velocitypowered.api.proxy.ProxyServer
 import com.velocitypowered.api.proxy.player.TabListEntry
 import me.xiaozhangup.skeletontab.TabList
 import net.kyori.adventure.text.Component
+import java.util.concurrent.TimeUnit
 
 class GlobalTabList( // class server
     private val proxyServer: ProxyServer
@@ -87,7 +88,7 @@ class GlobalTabList( // class server
     fun updateTask() {
         proxyServer.scheduler.buildTask(TabList.plugin) {
             pingUpdate()
-        }.repeat(500L, java.util.concurrent.TimeUnit.MILLISECONDS).schedule()
+        }.repeat(1L, TimeUnit.SECONDS).schedule()
     }
 
     companion object {
