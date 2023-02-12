@@ -12,11 +12,6 @@ plugins {
 taboolib {
     install("common")
     install("common-5")
-    install("module-chat")
-    install("module-configuration")
-    install("module-database")
-    install("expansion-command-helper")
-    install("expansion-player-database")
     install("platform-velocity")
 
     classifier = null

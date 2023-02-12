@@ -1,8 +1,6 @@
 package me.xiaozhangup.skeletontab
 
 import com.google.inject.Inject
-import com.velocitypowered.api.event.Subscribe
-import com.velocitypowered.api.event.proxy.ProxyInitializeEvent
 import com.velocitypowered.api.plugin.annotation.DataDirectory
 import com.velocitypowered.api.proxy.ProxyServer
 import me.xiaozhangup.skeletontab.configuration.TabSettings
@@ -12,37 +10,44 @@ import org.slf4j.Logger
 import taboolib.common.env.RuntimeDependencies
 import taboolib.common.env.RuntimeDependency
 import taboolib.common.platform.Plugin
+import taboolib.platform.VelocityPlugin
 import java.nio.file.Path
+import java.util.Objects
 
 @RuntimeDependencies(
     RuntimeDependency(value = "net.kyori:adventure-text-minimessage:4.12.0")
 )
 object TabList : Plugin() {
-    @Inject
-    private val logger: Logger? = null
+    @JvmStatic
+    lateinit var plugin: VelocityPlugin
+        private set
 
     @Inject
-    private val proxyServer: ProxyServer? = null
+    private var logger: Logger? = null
 
     @Inject
-    @DataDirectory
-    private val dataDirectory: Path? = null
+    private var proxyServer: ProxyServer? = null
+
+    @Inject
     private var tabSettings: TabSettings? = null
     private var globalTabList: GlobalTabList? = null
     private var tabListHeaderFooter: TabListHeaderFooter? = null
 
-    @Subscribe
-    fun onProxyInitialization(event: ProxyInitializeEvent?) {
-        tabSettings = TabSettings(dataDirectory!!.toFile())
+    override fun onEnable() {
+        plugin = VelocityPlugin.getInstance()
+        logger = plugin.logger;
+        proxyServer = plugin.server
+
+        tabSettings = TabSettings(plugin.configDirectory.toFile())
         if (tabSettings!!.isEnabled) {
             if (tabSettings?.toml?.getBoolean("global-tablist.enabled") == true) {
                 globalTabList = GlobalTabList(proxyServer)
-                proxyServer!!.eventManager.register(this, globalTabList)
+                proxyServer!!.eventManager.register(plugin, globalTabList)
                 logger!!.info("Loaded Global Tablist")
             }
             if (tabSettings?.toml?.getBoolean("tablist-header-footer.enabled") == true) {
-                tabListHeaderFooter = TabListHeaderFooter(this, proxyServer, tabSettings)
-                proxyServer!!.eventManager.register(this, tabListHeaderFooter)
+                tabListHeaderFooter = TabListHeaderFooter(proxyServer, tabSettings)
+                proxyServer!!.eventManager.register(plugin, tabListHeaderFooter)
                 logger!!.info("Loaded Header & Footer")
             }
         }
