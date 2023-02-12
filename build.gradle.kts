@@ -40,6 +40,7 @@ dependencies {
 
     compileOnly("com.velocitypowered:velocity-api:3.1.1")
     compileOnly("net.kyori:adventure-text-minimessage:4.12.0")
+    compileOnly("io.netty:netty-all:4.1.20.Final")
 }
 
 java {

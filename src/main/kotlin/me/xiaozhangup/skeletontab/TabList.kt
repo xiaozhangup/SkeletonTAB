@@ -41,7 +41,7 @@ object TabList : Plugin() {
         tabSettings = TabSettings(plugin.configDirectory.toFile())
         if (tabSettings!!.isEnabled) {
             if (tabSettings?.toml?.getBoolean("global-tablist.enabled") == true) {
-                globalTabList = GlobalTabList(proxyServer)
+                globalTabList = GlobalTabList(proxyServer!!)
                 proxyServer!!.eventManager.register(plugin, globalTabList)
                 logger!!.info("Loaded Global Tablist")
             }
@@ -51,5 +51,7 @@ object TabList : Plugin() {
                 logger!!.info("Loaded Header & Footer")
             }
         }
+
+        globalTabList?.updateTask()
     }
 }
