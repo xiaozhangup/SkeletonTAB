@@ -4,16 +4,13 @@
 
 # Global tablist
 [global-tablist]
-    enabled=false
+    enabled=true
 
 [tablist-header-footer]
-    enabled=false
+    enabled=true
     # If you are unsure how to hanle new lines, take a look at https://toml.io/en/ or just use \n
     header="""
-        <white><red>Example<red> Network</white>
+        <white>SkeletonTAB</white>
 
-        <white>Line 3!</white>"""
-    footer="<light_purple>have fun!</light_purple>"
-
-[developer-info]
-    config-version=0.1
+        <white>Hi there! The globle tablist</white>"""
+    footer="<light_purple>Good job!</light_purple>"
