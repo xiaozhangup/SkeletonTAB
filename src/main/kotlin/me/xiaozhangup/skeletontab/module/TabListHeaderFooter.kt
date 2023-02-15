@@ -18,7 +18,7 @@ class TabListHeaderFooter(private val proxyServer: ProxyServer?, tabSettings: Ta
 
     @Subscribe
     fun connect(event: ServerConnectedEvent) {
-        update()
+        update(event.player)
     }
 
     // listener of player disconnect
@@ -49,6 +49,23 @@ class TabListHeaderFooter(private val proxyServer: ProxyServer?, tabSettings: Ta
         }
     }
 
+    private fun update(player: Player) {
+        if (proxyServer == null) {
+            return
+        }
+            val head = MiniMessage.miniMessage().deserialize(
+                header
+                    .replace("{online}", proxyServer.allPlayers.count().toString())
+                    .replace("{server}", serverName(player))
+            )
+            val foot = MiniMessage.miniMessage().deserialize(
+                footer
+                    .replace("{online}", proxyServer.allPlayers.count().toString())
+                    .replace("{server}", serverName(player))
+            )
+            player.sendPlayerListHeaderAndFooter(head, foot)
+    }
+
     private fun serverName(player: Player): String {
         if (player.currentServer.isPresent) {
             val name = player.currentServer.get().serverInfo.name
@@ -56,6 +73,6 @@ class TabListHeaderFooter(private val proxyServer: ProxyServer?, tabSettings: Ta
                 return "子岛屿"
             } else return "主岛屿"
         }
-        return "位置地域"
+        return "未知地域"
     }
 }
